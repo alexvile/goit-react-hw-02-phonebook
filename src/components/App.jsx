@@ -1,9 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { nanoid } from 'nanoid';
 
 import Form from './Form/Form';
 import Filter from './Filter/Filter';
 import ContactList from './ContactList/ContactList';
+import { Container, Title, Subtitle } from './App.styled';
 
 class App extends React.Component {
   static defaultProps = {
@@ -12,13 +14,12 @@ class App extends React.Component {
       { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
       { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
       { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-      { id: 'id-5', name: 'Test', number: '222' },
     ],
   };
 
-  // static propTypes = {
-  //   initialValue: PropTypes.number,
-  // };
+  static propTypes = {
+    initialSettings: PropTypes.arrayOf(PropTypes.object.isRequired),
+  };
 
   state = {
     contacts: this.props.initialSettings,
@@ -55,25 +56,24 @@ class App extends React.Component {
     }));
   };
   render() {
-    const { filter } = this.state;
-
-    const normalizedFilter = this.state.filter.toLowerCase();
-
-    const filteredContacts = this.state.contacts.filter(contact =>
+    const { filter, contacts } = this.state;
+    const normalizedFilter = filter.toLowerCase();
+    const filteredContacts = contacts.filter(contact =>
       contact.name.toLowerCase().includes(normalizedFilter)
     );
+
     return (
-      <div>
-        <h1>Phonebook</h1>
+      <Container>
+        <Title>Phonebook</Title>
         <Form onSubmit={this.formSubmitHandler} />
 
-        <h2>Contacts</h2>
+        <Subtitle>Contacts</Subtitle>
         <Filter value={filter} onChange={this.changeFilter} />
         <ContactList
           filteredContacts={filteredContacts}
           onDeleteContact={this.deleteContact}
         />
-      </div>
+      </Container>
     );
   }
 }
