@@ -23,6 +23,12 @@ const ContactList = ({ filteredContacts, onDeleteContact }) => {
 export default ContactList;
 
 ContactList.propTypes = {
-  filteredContacts: PropTypes.arrayOf(PropTypes.object.isRequired),
+  filteredContacts: PropTypes.arrayOf(
+    PropTypes.exact({
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      number: PropTypes.string.isRequired,
+    })
+  ),
   onDeleteContact: PropTypes.func.isRequired,
 };
